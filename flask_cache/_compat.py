@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # -*- coding: utf-8 -*-
 """
     flask_cache._compat

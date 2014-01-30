@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import pickle
 from werkzeug.contrib.cache import (BaseCache, NullCache, SimpleCache, MemcachedCache,
                                     GAEMemcachedCache, FileSystemCache)
