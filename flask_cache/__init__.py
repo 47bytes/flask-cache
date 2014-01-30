@@ -22,6 +22,7 @@ import logging
 
 from werkzeug import import_string
 from flask import request, current_app
+import collections
 
 
 logger = logging.getLogger(__name__)
@@ -227,7 +228,7 @@ class Cache(object):
             @functools.wraps(f)
             def decorated_function(*args, **kwargs):
                 #: Bypass the cache entirely.
-                if callable(unless) and unless() is True:
+                if isinstance(unless, collections.Callable) and unless() is True:
                     return f(*args, **kwargs)
 
                 try:
@@ -252,7 +253,7 @@ class Cache(object):
                 return rv
 
             def make_cache_key(*args, **kwargs):
-                if callable(key_prefix):
+                if isinstance(key_prefix, collections.Callable):
                     cache_key = key_prefix()
                 elif '%s' in key_prefix:
                     cache_key = key_prefix % request.path
@@ -294,12 +295,12 @@ class Cache(object):
 
             #: this should have to be after version_data, so that it
             #: does not break the delete_memoized functionality.
-            if callable(make_name):
+            if isinstance(make_name, collections.Callable):
                 altfname = make_name(fname)
             else:
                 altfname = fname
 
-            if callable(f):
+            if isinstance(f, collections.Callable):
                 keyargs, keykwargs = self.memoize_kwargs_to_args(f,
                                                                  *args,
                                                                  **kwargs)
@@ -432,7 +433,7 @@ class Cache(object):
             @functools.wraps(f)
             def decorated_function(*args, **kwargs):
                 #: bypass cache
-                if callable(unless) and unless() is True:
+                if isinstance(unless, collections.Callable) and unless() is True:
                     return f(*args, **kwargs)
 
                 try:
@@ -531,7 +532,7 @@ class Cache(object):
             this function, so that when the version has is swapped, the old cached
             results would eventually be reclaimed by the caching backend.
         """
-        if not callable(f):
+        if not isinstance(f, collections.Callable):
             raise DeprecationWarning("Deleting messages by relative name is no longer"
                           " reliable, please switch to a function reference")
 
@@ -562,7 +563,7 @@ class Cache(object):
             version hash at least have timeouts so they will not sit orphaned
             in the cache backend.
         """
-        if not callable(f):
+        if not isinstance(f, collections.Callable):
             raise DeprecationWarning("Deleting messages by relative name is no longer"
                           " reliable, please use a function reference")
 

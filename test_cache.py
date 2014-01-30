@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from __future__ import with_statement
 
 import sys
@@ -13,6 +16,8 @@ if sys.version_info < (2,7):
     import unittest2 as unittest
 else:
     import unittest
+
+PY2 = sys.version_info[0] == 2
 
 class CacheTestCase(unittest.TestCase):
 
@@ -348,6 +353,10 @@ class CacheTestCase(unittest.TestCase):
         rv = tc.get('/')
         the_time = rv.data
 
+        # python3 support
+        if not PY2:
+            the_time = the_time.decode()
+
         with self.app.test_request_context():
             cache_data = self.cache.get(cached_view.make_cache_key())
             assert the_time == cache_data
@@ -365,6 +374,10 @@ class CacheTestCase(unittest.TestCase):
 
         rv = tc.get('/a/b')
         the_time = rv.data
+
+        # python3 support
+        if not PY2:
+            the_time = the_time.decode()
 
         cache_key = cached_view.make_cache_key(cached_view.uncached, foo=u"a", bar=u"b")
         cache_data = self.cache.get(cache_key)

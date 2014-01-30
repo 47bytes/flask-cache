@@ -24,23 +24,23 @@ if not PY2:
     string_types = (str,)
     range_type = range
 
-    iterkeys = lambda d: iter(d.keys())
-    itervalues = lambda d: iter(d.values())
-    iteritems = lambda d: iter(d.items())
+    iterkeys = lambda d: iter(list(d.keys()))
+    itervalues = lambda d: iter(list(d.values()))
+    iteritems = lambda d: iter(list(d.items()))
 
     import pickle
     from io import BytesIO, StringIO
     NativeStringIO = StringIO
 
 else:
-    text_type = unicode
-    string_types = (str, unicode)
+    text_type = str
+    string_types = (str, str)
     range_type = xrange
 
-    iterkeys = lambda d: d.iterkeys()
-    itervalues = lambda d: d.itervalues()
-    iteritems = lambda d: d.iteritems()
+    iterkeys = lambda d: iter(list(d.keys()))
+    itervalues = lambda d: iter(list(d.values()))
+    iteritems = lambda d: iter(list(d.items()))
 
-    import cPickle as pickle
-    from cStringIO import StringIO as BytesIO, StringIO
+    import pickle as pickle
+    from io import StringIO as BytesIO, StringIO
     NativeStringIO = BytesIO
